@@ -33,4 +33,11 @@ import { ScreenModule } from './screen/screen.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    console.log(
+      'Database Host:+++++++++++++++++++++++++++++++++++++++++++++++++++++',
+      process.env.PGHOST,
+    );
+  }
+}
