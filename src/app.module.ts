@@ -23,7 +23,7 @@ import { ScreenModule } from './screen/screen.module';
       password: process.env.POSTGRES_PASSWORD || 'miramax92',
       database: process.env.POSTGRES_DB || 'playground',
       synchronize: process.env.NODE_ENV !== 'production', // Disable synchronize in production
-      autoLoadModels: true,
+      // autoLoadModels: true,
     }),
     ContentModule,
     PriceModule,
