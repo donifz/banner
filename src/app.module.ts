@@ -11,6 +11,7 @@ import { ScreenModule } from './screen/screen.module';
 import { Content } from './content/entities/content.entity';
 import { Price } from './price/entities/price.entity';
 import { Screen } from './screen/entities/screen.entity';
+import { ContentScreen } from './content/entities/contentScreen';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { Screen } from './screen/entities/screen.entity';
       database: process.env.POSTGRES_DB || 'playground',
       synchronize: process.env.NODE_ENV !== 'production', // Disable synchronize in production
       // autoLoadModels: true,
-      models: [Content, Price, Screen],
+      models: [Content, Price, Screen, ContentScreen],
     }),
     ContentModule,
     PriceModule,
