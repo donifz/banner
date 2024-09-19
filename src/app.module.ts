@@ -26,7 +26,7 @@ import { ContentScreen } from './content/entities/contentScreen';
       username: process.env.POSTGRES_USER || 'postgres',
       password: process.env.POSTGRES_PASSWORD || 'miramax92',
       database: process.env.POSTGRES_DB || 'banner',
-      autoLoadModels: true,
+      synchronize: true,
       models: [Content, Price, Screen, ContentScreen],
     }),
     ContentModule,
