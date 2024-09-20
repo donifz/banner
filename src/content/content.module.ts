@@ -7,13 +7,14 @@ import { Content } from './entities/content.entity';
 import { FileService } from 'src/file/file.service';
 import { ContentScreen } from './entities/contentScreen';
 import { Screen } from 'src/screen/entities/screen.entity';
+import { CronService } from 'src/Cron/cron.service';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([Content, Price, Screen, ContentScreen]),
   ],
-  exports: [ContentService],
+  exports: [ContentService, CronService],
   controllers: [ContentController],
-  providers: [ContentService, FileService],
+  providers: [ContentService, FileService, CronService],
 })
 export class ContentModule {}

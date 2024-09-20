@@ -12,6 +12,8 @@ import { Content } from './content/entities/content.entity';
 import { Price } from './price/entities/price.entity';
 import { Screen } from './screen/entities/screen.entity';
 import { ContentScreen } from './content/entities/contentScreen';
+import { ScheduleModule } from '@nestjs/schedule';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -29,10 +31,12 @@ import { ContentScreen } from './content/entities/contentScreen';
       autoLoadModels: true,
       models: [Content, Price, Screen, ContentScreen],
     }),
+    ScheduleModule.forRoot(),
     ContentModule,
     PriceModule,
     FileModule,
     ScreenModule,
+    SettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
