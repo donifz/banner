@@ -8,7 +8,7 @@ import { FileService } from 'src/file/file.service';
 import { ContentScreen } from './entities/contentScreen';
 import { Screen } from 'src/screen/entities/screen.entity';
 import { CronService } from 'src/Cron/cron.service';
-import { BroadcastService } from 'src/Broadcast/Broadcast.service';
+import { BroadcastService } from 'src/Broadcast/broadcast.service';
 
 @Module({
   imports: [
