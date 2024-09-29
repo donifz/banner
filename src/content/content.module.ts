@@ -8,6 +8,7 @@ import { FileService } from 'src/file/file.service';
 import { ContentScreen } from './entities/contentScreen';
 import { Screen } from 'src/screen/entities/screen.entity';
 import { CronService } from 'src/Cron/cron.service';
+import { BroadcastService } from 'src/Broadcast/Broadcast.service';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { CronService } from 'src/Cron/cron.service';
   ],
   exports: [ContentService, CronService],
   controllers: [ContentController],
-  providers: [ContentService, FileService, CronService],
+  providers: [ContentService, FileService, CronService, BroadcastService],
 })
 export class ContentModule {}

@@ -14,6 +14,8 @@ import { Screen } from './screen/entities/screen.entity';
 import { ContentScreen } from './content/entities/contentScreen';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SettingsModule } from './settings/settings.module';
+import { BroadcastModule } from './Broadcast/broadcast.module';
+import { QueueModule } from './Queue/queue.module';
 
 @Module({
   imports: [
@@ -37,6 +39,8 @@ import { SettingsModule } from './settings/settings.module';
     FileModule,
     ScreenModule,
     SettingsModule,
+    QueueModule, // Queue module for handling content queues
+    BroadcastModule,
   ],
   controllers: [AppController],
   providers: [AppService],

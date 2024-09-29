@@ -1,5 +1,11 @@
-import { IsArray, IsEnum, IsNumber, IsString, Max, Min } from 'class-validator';
-import { isInt32Array } from 'util/types';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 
 export enum Status {
   PENDING = 'pending',
@@ -28,6 +34,6 @@ export class CreateContentDto {
   @Max(60)
   min: number;
 
-  @IsArray()
+  @IsNotEmpty()
   screens: [];
 }

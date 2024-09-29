@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { FileService } from 'src/file/file.service';
 import { Content } from './entities/content.entity';
 import { Screen } from 'src/screen/entities/screen.entity';
+import { BroadcastService } from 'src/Broadcast/Broadcast.service';
 
 @Injectable()
 export class ContentService {
@@ -13,6 +14,7 @@ export class ContentService {
     private readonly fileService: FileService,
     @InjectModel(Screen)
     private readonly screenModel: typeof Screen,
+    private readonly broadcastService: BroadcastService,
   ) {}
   async create(createContentDto: CreateContentDto) {
     const file = this.fileService.create(
@@ -23,9 +25,20 @@ export class ContentService {
       img: file as string,
     });
     content.$set('screens', [...createContentDto.screens]);
+
+    const contents = await this.findAll();
+    this.broadcastService.sendToClients(contents);
     return content;
   }
+  async getContentById(contentId: number): Promise<Content> {
+    // Получение контента по ID
+    return this.contentService.findByPk(contentId);
+  }
 
+  async publishToWebSocket(content: Content) {
+    // Публикация контента через WebSocket
+    this.broadcastService.sendToClients(content);
+  }
   async addScreensToContent(
     contentId: number,
     screenIds: number[],
@@ -50,7 +63,7 @@ export class ContentService {
   }
 
   update(id: number, updateContentDto: UpdateContentDto) {
-    return `This action updates a #${id} content`;
+    return `This action updates a #${id} content${JSON.stringify(updateContentDto)}`;
   }
 
   remove(id: number) {
