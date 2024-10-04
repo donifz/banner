@@ -46,6 +46,16 @@ export class ContentController {
   update(@Param('id') id: string, @Body() updateContentDto: UpdateContentDto) {
     return this.contentService.update(+id, updateContentDto);
   }
+  @Patch('approve/:id')
+  approve(@Param('id') id: string) {
+    console.log(id, 'id approve');
+    return this.contentService.approve(+id);
+  }
+  @Patch('pay/:id')
+  pay(@Param('id') id: string) {
+    console.log(id, 'id approve');
+    return this.contentService.pay(+id);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

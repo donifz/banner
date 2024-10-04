@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateContentDto } from './dto/create-content.dto';
-import { UpdateContentDto } from './dto/update-content.dto';
+import { Status, UpdateContentDto } from './dto/update-content.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { FileService } from 'src/file/file.service';
 import { Content } from './entities/content.entity';
@@ -58,12 +58,40 @@ export class ContentService {
     return this.contentService.findAll({ include: { all: true } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} content`;
+  async findOne(id: number) {
+    return await this.contentService.findByPk(id);
   }
 
   update(id: number, updateContentDto: UpdateContentDto) {
     return `This action updates a #${id} content${JSON.stringify(updateContentDto)}`;
+  }
+  async approve(id: number) {
+    const changedStatus = { status: Status.CHECKED };
+    const [numberOfAffectedRows, [updatedContent]] =
+      await this.contentService.update(
+        { ...changedStatus },
+        { where: { id }, returning: true },
+      );
+    if (numberOfAffectedRows === 0) {
+      throw new NotFoundException(`Content with id ${id} not found`);
+    }
+    const contents = await this.findAll();
+    this.broadcastService.sendToClients(contents);
+    return updatedContent;
+  }
+  async pay(id: number) {
+    const changedStatus = { status: Status.PUBLISHED };
+    const [numberOfAffectedRows, [updatedContent]] =
+      await this.contentService.update(
+        { ...changedStatus },
+        { where: { id }, returning: true },
+      );
+    if (numberOfAffectedRows === 0) {
+      throw new NotFoundException(`Content with id ${id} not found`);
+    }
+    const contents = await this.findAll();
+    this.broadcastService.sendToClients(contents);
+    return updatedContent;
   }
 
   remove(id: number) {
