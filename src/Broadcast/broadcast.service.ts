@@ -15,4 +15,10 @@ export class BroadcastService {
     );
     this.server.emit('newContent', content);
   }
+  sendToClientsScreenContents(content) {
+    console.log(
+      'sendToClients----------------------------------------------------------------',
+    );
+    this.server.emit('publishContent', content);
+  }
 }

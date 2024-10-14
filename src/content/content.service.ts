@@ -35,6 +35,18 @@ export class ContentService {
     return this.contentService.findByPk(contentId);
   }
 
+  async getContentsByScreen(screenId: number) {
+    const screen = await this.screenModel.findByPk(screenId, {
+      include: [{ model: Content, where: { status: Status.PUBLISHED } }], // Include the associated Content
+    });
+
+    if (!screen) {
+      throw new NotFoundException(`Screen with id ${screenId} not found`);
+    }
+
+    return screen.contents; // Return the contents associated with the screen
+  }
+
   async publishToWebSocket(content: Content) {
     // Публикация контента через WebSocket
     this.broadcastService.sendToClients(content);
@@ -89,12 +101,35 @@ export class ContentService {
     if (numberOfAffectedRows === 0) {
       throw new NotFoundException(`Content with id ${id} not found`);
     }
-    const contents = await this.findAll();
-    this.broadcastService.sendToClients(contents);
+    const content = await this.contentService.findByPk(id, {
+      include: [Screen],
+    });
+    // Loop through each screen asynchronously
+    console.log(content, 'contetn');
+
+    for (const screen of content.screens) {
+      // Find each screen by its ID and include associated contents
+      const fullScreen = await this.screenModel.findByPk(screen.id, {
+        include: [{ model: Content, where: { status: Status.PUBLISHED } }],
+      });
+      console.log(fullScreen, 'fullScreen');
+
+      this.broadcastService.sendToClientsScreenContents(fullScreen);
+      // Perform any additional operations with `fullScreen` if needed
+    }
     return updatedContent;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} content`;
+  async remove() {
+    await this.contentService.destroy({
+      where: {},
+    });
+  }
+  async removeAll() {
+    await this.contentService.destroy({
+      where: {},
+
+      // No condition means all records will be deleted
+    });
   }
 }

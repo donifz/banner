@@ -36,6 +36,10 @@ export class ContentController {
   findAll() {
     return this.contentService.findAll();
   }
+  @Get('screen/:screenId')
+  findContentsByScreen(@Param('screenId') screenId: number) {
+    return this.contentService.getContentsByScreen(screenId);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -58,7 +62,11 @@ export class ContentController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.contentService.remove(+id);
+  remove() {
+    return this.contentService.remove();
+  }
+  @Delete('remove-all')
+  removeAll() {
+    return this.contentService.removeAll();
   }
 }
